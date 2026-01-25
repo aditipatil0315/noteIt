@@ -1,26 +1,119 @@
-
-
+/* Footer Container */
 .app-footer {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 3rem;
-    background-color: black;
+    padding: 24px 48px;
+    min-height: 80px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Light Theme Footer */
+.app-footer.light {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Dark Theme Footer */
+.app-footer.dark {
+    background-color: #1e2a3a;
+    border-top: 1px solid #2d3a4a;
+}
+
+/* Footer Content */
+.app-footer p {
     margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
+/* Light Theme Text */
+.app-footer.light p {
+    color: #4a5568;
+}
+
+/* Dark Theme Text */
+.app-footer.dark p {
+    color: #cbd5e0;
+}
+
+/* Footer Links Container */
 .footer-links {
-    display: flex;  
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
-    padding: 35px 0px;
-
+    display: flex;
+    gap: 32px;
 }
 
-.app-footer a, .app-footer p{
-    color: #C1F11D;
-    font-size: 18px;
-    font-weight: 600;
+/* Footer Links */
+.footer-links p {
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+/* Light Theme Links */
+.app-footer.light .footer-links p:hover {
+    color: #3498db;
+}
+
+/* Dark Theme Links */
+.app-footer.dark .footer-links p:hover {
+    color: #64b5f6;
+}
+
+/* Underline Effect */
+.footer-links p::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+/* Light Theme Underline */
+.app-footer.light .footer-links p::after {
+    background-color: #3498db;
+}
+
+/* Dark Theme Underline */
+.app-footer.dark .footer-links p::after {
+    background-color: #64b5f6;
+}
+
+.footer-links p:hover::after {
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .app-footer {
+        flex-direction: column;
+        padding: 20px 24px;
+        gap: 16px;
+        text-align: center;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .app-footer p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-footer {
+        padding: 16px 20px;
+    }
+    
+    .footer-links p {
+        font-size: 12px;
+    }
 }

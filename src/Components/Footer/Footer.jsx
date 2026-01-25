@@ -1,19 +1,17 @@
 import React from "react";
 import "./Footer.css"; 
 
-const Footer = () => {
+const Footer = ({ theme }) => {
   return (
-    <footer className="app-footer">
+    <footer className={`app-footer ${theme}`}>
       <p>&copy; 2024 NoteIt. All rights reserved.</p>
       <div className="footer-links">
-        <p href="/privacy-policy">Privacy Policy</p> 
-        <p href="/terms-of-service">Terms of Service</p> 
-        <p href="/contact">Contact Us</p>
+        <p>Privacy Policy</p> 
+        <p>Terms of Service</p> 
+        <p>Contact Us</p>
       </div>
     </footer>
   );
 };
 
 export default Footer;
-
-

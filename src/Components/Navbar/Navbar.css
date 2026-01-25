@@ -1,102 +1,307 @@
-
-
-.nav_container{
-    height: 9vh;
-    width: 97.4vw;
-    /* background-color: yellowgreen; */
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
-    padding: 15px 20px;
-    position: sticky;
-    z-index: 1;
+/* Navbar Container */
+.nav_container {
+  height: 70px;
+  width: 100%;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
 }
 
+/* Light Theme */
+.nav_container.light {
+  background-color: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Dark Theme */
+.nav_container.dark {
+  background-color: #1e2a3a;
+  border-bottom: 1px solid #2d3a4a;
+}
+
+/* Nav Contents */
 .nav_contents {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.nav_contents .logo {
-    width: 30%;
+/* Logo */
+.logo {
+  flex: 1;
 }
 
 .logo p {
-    font-size: 39px;
-    font-weight: 600;
-    cursor: pointer;
-    padding-left: 30px;
+  font-size: 32px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 0;
+  transition: color 0.3s ease;
 }
 
-.nav_contents .options {
-    width: 50%;
-    display: flex;
+/* Light Theme Logo */
+.nav_container.light .logo p {
+  color: #2c3e50;
 }
 
+/* Dark Theme Logo */
+.nav_container.dark .logo p {
+  color: #ffffff;
+}
+
+/* Navigation Options */
+.options {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+}
+
+/* Navigation List */
 ul {
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    gap: 2.5rem;
+  display: flex;
+  gap: 48px;
+  margin: 0;
+  padding: 0;
 }
 
 ul li {
-    list-style: none;
+  list-style: none;
 }
 
-
+/* Navigation Links */
 .options a {
-    color: black;
-    text-decoration: none;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Light Theme Links */
+.nav_container.light .options a {
+  color: #4a5568;
+}
+
+.nav_container.light .options a:hover {
+  color: #2c3e50;
+}
+
+/* Dark Theme Links */
+.nav_container.dark .options a {
+  color: #cbd5e0;
+}
+
+.nav_container.dark .options a:hover {
+  color: #ffffff;
+}
+
+/* Active Link Indicator */
+.options a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Active Link - Light Theme */
+.nav_container.light .options a.active {
+  color: #3498db;
+}
+
+.nav_container.light .options a.active::after {
+  width: 100%;
+  background-color: #3498db;
+}
+
+/* Active Link - Dark Theme */
+.nav_container.dark .options a.active {
+  color: #64b5f6;
+}
+
+.nav_container.dark .options a.active::after {
+  width: 100%;
+  background-color: #64b5f6;
+}
+
+/* Side Menu */
+.side_menu {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+/* Light Theme Toggle */
+.nav_container.light .theme-toggle {
+  color: #4a5568;
+}
+
+.nav_container.light .theme-toggle:hover {
+  background-color: #f7fafc;
+}
+
+/* Dark Theme Toggle */
+.nav_container.dark .theme-toggle {
+  color: #cbd5e0;
+}
+
+.nav_container.dark .theme-toggle:hover {
+  background-color: #2d3748;
+}
+
+.theme-toggle i {
+  font-size: 20px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Navbar Container */
+  .nav_container {
+    height: 60px;
+    padding: 0 16px;
+  }
+
+  /* Nav Contents */
+  .nav_contents {
+    justify-content: space-between;
+  }
+
+  /* Logo */
+  .logo {
+    flex: 0 1 auto;
+  }
+
+  .logo p {
+    font-size: 24px;
+    padding-left: 0;
+  }
+
+  /* Navigation Options */
+  .options {
+    flex: 1;
+    justify-content: flex-end;
+    display: none; /* Hidden by default on mobile */
+  }
+
+  /* Show mobile menu */
+  .options.active {
+    display: flex;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+  }
+
+  .nav_container.dark .options.active {
+    background-color: #1e2a3a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Navigation List */
+  ul {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  ul li {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Navigation Links */
+  .options a {
     font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: linear 0.3s;
-}
+    padding: 12px 0;
+    display: block;
+    width: 100%;
+  }
 
-.options a:hover {
-    scale: 1.02;
-}
+  /* Side Menu */
+  .side_menu {
+    flex: 0 1 auto;
+  }
 
-
-
-.nav_contents .side_menu {
-    width: 20%;
+  /* Mobile Menu Toggle Button */
+  .mobile-menu-toggle {
     display: flex;
-    gap: 1rem;
-    justify-content: end;
-
-}
-
-.side_menu .icons {
-    background-color: #C1F11D;
-    border: 2.5px solid black;
-    font-size: 21px;
-    height: 30px;
+    flex-direction: column;
+    justify-content: space-between;
     width: 30px;
-    border-radius: 50%;
-    padding: 9px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 21px;
+    background: none;
+    border: none;
     cursor: pointer;
-    box-shadow: 3px 3px 0px black;
-    transition: linear 0.2s;
+    padding: 0;
+    margin-right: 16px;
+  }
+
+  .mobile-menu-toggle span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .nav_container.light .mobile-menu-toggle span {
+    background-color: #4a5568;
+  }
+
+  .nav_container.dark .mobile-menu-toggle span {
+    background-color: #cbd5e0;
+  }
 }
 
+@media (max-width: 480px) {
+  .nav_container {
+    padding: 0 12px;
+  }
 
-.icons:hover {
-    box-shadow: none;
+  .logo p {
+    font-size: 20px;
+  }
 
-}
+  .options a {
+    font-size: 16px;
+  }
 
-.options a.active {
-    /* text-decoration: underline #C1F11D 5px;
-    text-underline-position:below; */
-    transition: linear 0.2s;
-    color: #C1F11D;
-    
+  .mobile-menu-toggle {
+    width: 26px;
+    height: 18px;
+    margin-right: 12px;
+  }
 }

@@ -1,46 +1,65 @@
-/* From Uiverse.io by Nawsome */
-@keyframes clockwise {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes counter-clockwise {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(-360deg);
-    }
-}
-
+/* Community Page Container */
 .gear_main {
     padding-top: 180px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    min-height: calc(100vh - 70px);
+    box-sizing: border-box;
 }
 
+/* Text Styling */
+.gear_main h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 20px 0 10px 0;
+    text-align: center;
+}
+
+.gear_main h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 40px 0 10px 0;
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* Light Theme Text Colors */
+:global(.light) .gear_main h1,
+:global(.light) .gear_main h2 {
+    color: #2c3e50;
+}
+
+/* Dark Theme Text Colors */
+:global(.dark) .gear_main h1,
+:global(.dark) .gear_main h2 {
+    color: #ffffff;
+}
+
+/* Gear Container */
 .gearbox {
-    background: #111;
-    height: 150px;
-    width: 200px;
+    background: #f8f9fa;
+    height: 180px;
+    width: 240px;
     position: relative;
     border: none;
     overflow: hidden;
-    border-radius: 6px;
-    box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.1);
-   
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+/* Dark Theme Gearbox */
+:global(.dark) .gearbox {
+    background: #2d3748;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Overlay */
 .gearbox .overlay {
-    border-radius: 6px;
+    border-radius: 12px;
     content: "";
     position: absolute;
     top: 0;
@@ -48,119 +67,138 @@
     width: 100%;
     height: 100%;
     z-index: 10;
-    box-shadow: inset 0px 0px 20px black;
-    transition: background 0.2s;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
 }
 
-.gearbox .overlay {
-    background: transparent;
+/* Dark Theme Overlay */
+:global(.dark) .gearbox .overlay {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
 }
 
+/* Gears */
 .gear {
     position: absolute;
-    height: 60px;
-    width: 60px;
-    box-shadow: 0px -1px 0px 0px #888888, 0px 1px 0px 0px black;
-    border-radius: 30px;
+    box-sizing: border-box;
+}
+
+/* Gear Sizes */
+.gear {
+    height: 70px;
+    width: 70px;
+    border-radius: 35px;
 }
 
 .gear.large {
-    height: 120px;
-    width: 120px;
-    border-radius: 60px;
+    height: 140px;
+    width: 140px;
+    border-radius: 70px;
 }
 
-.gear.large:after {
-    height: 96px;
-    width: 96px;
-    border-radius: 48px;
-    margin-left: -48px;
-    margin-top: -48px;
-}
-
+/* Gear Positions */
 .gear.one {
-    top: 12px;
-    left: 10px;
+    top: 15px;
+    left: 15px;
 }
 
 .gear.two {
-    top: 61px;
-    left: 60px;
+    top: 75px;
+    left: 75px;
 }
 
 .gear.three {
-    top: 110px;
-    left: 10px;
+    top: 135px;
+    left: 15px;
 }
 
 .gear.four {
-    top: 13px;
-    left: 128px;
+    top: 20px;
+    left: 155px;
 }
 
-.gear:after {
-    content: "";
-    position: absolute;
-    height: 36px;
-    width: 36px;
-    border-radius: 36px;
-    background: #111;
-    top: 50%;
-    left: 50%;
-    margin-left: -18px;
-    margin-top: -18px;
-    z-index: 3;
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1), inset 0px 0px 10px rgba(0, 0, 0, 0.1), inset 0px 2px 0px 0px #090909, inset 0px -1px 0px 0px #888888;
-}
-
+/* Gear Inner */
 .gear-inner {
     position: relative;
     height: 100%;
     width: 100%;
-    background: #555;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    background: #e2e8f0;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Dark Theme Gear Inner */
+:global(.dark) .gear-inner {
+    background: #4a5568;
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .large .gear-inner {
-    border-radius: 60px;
+    border-radius: 50%;
 }
 
-.gear.one .gear-inner {
-    animation: counter-clockwise 3s infinite linear;
+/* Gear Center */
+.gear:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: #ffffff;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.gear.two .gear-inner {
-    animation: clockwise 3s infinite linear;
+/* Normal Gear Center */
+.gear:after {
+    height: 30px;
+    width: 30px;
+    margin-left: -15px;
+    margin-top: -15px;
 }
 
-.gear.three .gear-inner {
-    animation: counter-clockwise 3s infinite linear;
+/* Large Gear Center */
+.gear.large:after {
+    height: 60px;
+    width: 60px;
+    margin-left: -30px;
+    margin-top: -30px;
 }
 
-.gear.four .gear-inner {
-    animation: counter-clockwise 6s infinite linear;
+/* Dark Theme Gear Center */
+:global(.dark) .gear:after {
+    background: #718096;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Gear Bars */
 .gear-inner .bar {
-    background: #555;
-    height: 16px;
-    width: 76px;
+    height: 12px;
     position: absolute;
     left: 50%;
-    margin-left: -38px;
     top: 50%;
-    margin-top: -8px;
-    border-radius: 2px;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    background: #cbd5e0;
 }
 
+/* Normal Gear Bars */
+.gear-inner .bar {
+    width: 70px;
+    margin-left: -35px;
+    margin-top: -6px;
+}
+
+/* Large Gear Bars */
 .large .gear-inner .bar {
-    margin-left: -68px;
-    width: 136px;
+    width: 120px;
+    margin-left: -60px;
 }
 
+/* Dark Theme Gear Bars */
+:global(.dark) .gear-inner .bar {
+    background: #718096;
+}
+
+/* Bar Rotations */
 .gear-inner .bar:nth-child(2) {
     transform: rotate(60deg);
 }
@@ -179,4 +217,206 @@
 
 .gear-inner .bar:nth-child(6) {
     transform: rotate(150deg);
+}
+
+/* Animations */
+@keyframes clockwise {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes counter-clockwise {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+/* Animation Speeds */
+.gear.one .gear-inner {
+    animation: counter-clockwise 5s infinite linear;
+}
+
+.gear.two .gear-inner {
+    animation: clockwise 5s infinite linear;
+}
+
+.gear.three .gear-inner {
+    animation: counter-clockwise 5s infinite linear;
+}
+
+.gear.four .gear-inner {
+    animation: counter-clockwise 8s infinite linear;
+}
+
+/* Subtle Hover Effect */
+.gearbox:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Theme Hover Effect */
+:global(.dark) .gearbox:hover {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Responsive Styles for CommunityPage */
+@media (max-width: 768px) {
+  .gear_main {
+    padding: 120px 20px 40px;
+  }
+  
+  .gear_main h1 {
+    font-size: 32px;
+  }
+  
+  .gear_main h2 {
+    font-size: 22px;
+    margin: 30px 0 8px 0;
+  }
+  
+  .gearbox {
+    height: 140px;
+    width: 190px;
+  }
+  
+  .gear {
+    height: 55px;
+    width: 55px;
+  }
+  
+  .gear.large {
+    height: 110px;
+    width: 110px;
+  }
+  
+  .gear-inner .bar {
+    width: 55px;
+    margin-left: -27.5px;
+    height: 10px;
+    margin-top: -5px;
+  }
+  
+  .large .gear-inner .bar {
+    width: 90px;
+    margin-left: -45px;
+  }
+  
+  .gear:after {
+    height: 24px;
+    width: 24px;
+    margin-left: -12px;
+    margin-top: -12px;
+  }
+  
+  .gear.large:after {
+    height: 45px;
+    width: 45px;
+    margin-left: -22.5px;
+    margin-top: -22.5px;
+  }
+  
+  .gear.one {
+    top: 12px;
+    left: 12px;
+  }
+  
+  .gear.two {
+    top: 60px;
+    left: 60px;
+  }
+  
+  .gear.three {
+    top: 108px;
+    left: 12px;
+  }
+  
+  .gear.four {
+    top: 15px;
+    left: 125px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gear_main {
+    padding: 100px 16px 32px;
+  }
+  
+  .gear_main h1 {
+    font-size: 26px;
+    margin: 16px 0 8px 0;
+  }
+  
+  .gear_main h2 {
+    font-size: 18px;
+    margin: 24px 0 8px 0;
+  }
+  
+  .gearbox {
+    height: 110px;
+    width: 150px;
+  }
+  
+  .gear {
+    height: 45px;
+    width: 45px;
+  }
+  
+  .gear.large {
+    height: 90px;
+    width: 90px;
+  }
+  
+  .gear-inner .bar {
+    width: 45px;
+    margin-left: -22.5px;
+    height: 8px;
+    margin-top: -4px;
+  }
+  
+  .large .gear-inner .bar {
+    width: 75px;
+    margin-left: -37.5px;
+  }
+  
+  .gear:after {
+    height: 20px;
+    width: 20px;
+    margin-left: -10px;
+    margin-top: -10px;
+  }
+  
+  .gear.large:after {
+    height: 35px;
+    width: 35px;
+    margin-left: -17.5px;
+    margin-top: -17.5px;
+  }
+  
+  .gear.one {
+    top: 10px;
+    left: 10px;
+  }
+  
+  .gear.two {
+    top: 50px;
+    left: 50px;
+  }
+  
+  .gear.three {
+    top: 90px;
+    left: 10px;
+  }
+  
+  .gear.four {
+    top: 10px;
+    left: 100px;
+  }
 }

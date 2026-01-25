@@ -6,6 +6,7 @@ const MainPart = () => {
   return (
     <div className='main_content_holder'>
         <UploadFile/>
+        
     </div>
   )
 }

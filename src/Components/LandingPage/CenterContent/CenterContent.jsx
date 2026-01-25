@@ -1,7 +1,5 @@
 import React from "react";
 import "./CenterContent.css";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 
 const CenterContent = () => {
   
@@ -10,54 +8,6 @@ const CenterContent = () => {
     const event = new CustomEvent("scrollToUploadSection");
     window.dispatchEvent(event);
   };
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".center_content",
-      scroller: "body", 
-      markers: true,
-      scrub: 2
-    }
-  });
-
-  useGSAP(() => {
-    tl.from(".left_part p, .left_part h3", {
-      opacity: 0,
-      delay: 1.5,
-      duration: 0.7,
-      x: -100,
-      stagger: 0.3,
-    }, "sathme");
-
-    gsap.from("button", {
-      opacity: 1,
-      delay: 2,
-      duration: 0.5
-    })
-
-    tl.from(".right_part", {
-        opacity: 0,
-        delay: 1.5,
-        duration: 0.7,
-        x: 100,
-      }, "sathme"
-    );
-
-    tl.from(".headings .line_one", {
-      opacity: 0,
-      x: -300,
-      delay: 2,
-      duration: 0.5
-    });
-
-    tl.from(".headings .line_two", {
-      opacity: 0,
-      x: 300,
-      delay: 2,
-      duration: 0.5,
-      stagger: 0.3
-    });
-  });
 
   
 
@@ -81,7 +31,7 @@ const CenterContent = () => {
         </div>
         <div className="right_part">
           <div className="image">
-            <img src={"./src/assets/hero.png"} alt="" />
+            <img src={"./src/assets/img.jpg"} alt="" />
           </div>
         </div>
       </div>
