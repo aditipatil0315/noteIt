@@ -1,5 +1,7 @@
 import React from "react";
 import "./CenterContent.css";
+import img from "../../../assets/img.jpg";
+
 
 const CenterContent = () => {
   
@@ -31,7 +33,7 @@ const CenterContent = () => {
         </div>
         <div className="right_part">
           <div className="image">
-            <img src={"./src/assets/img.jpg"} alt="" />
+            <img src={img} alt="" />
           </div>
         </div>
       </div>
