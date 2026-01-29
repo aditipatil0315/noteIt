@@ -21,30 +21,53 @@
 // }
 
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+import axios from "axios";
 
 export async function generateSummary(text) {
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("GEMINI_API_KEY missing");
+  }
+
   try {
-    const model = genAI.getGenerativeModel({
-      model: "gemini-pro" // ✅ WORKING MODEL
-    });
+    const response = await axios.post(
+      "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+      {
+        model: "gemini-2.5-flash",
+        messages: [
+          {
+            role: "system",
+            content: `You are a helpful assistant.
+Summarize the given content into short, clear bullet points.
+Keep language simple and easy to understand.`
+          },
+          {
+            role: "user",
+            content: text.slice(0, 6000)
+          }
+        ],
+        temperature: 0.4,
+        max_tokens: 800
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
 
-    const prompt = `
-Summarize the following content into short, clear bullet points.
-Keep it simple and easy to understand.
+    return response.data.choices[0].message.content;
 
-CONTENT:
-${text.slice(0, 12000)}
-`;
-
-    const result = await model.generateContent(prompt);
-    return result.response.text();
   } catch (error) {
-    console.error("❌ Gemini Error FULL:", error);
-    throw new Error("Gemini API failed");
+    console.error(
+      "❌ Gemini Summary Error:",
+      error.response?.data || error.message
+    );
+    throw new Error("Summary generation failed");
   }
 }
+
 
 

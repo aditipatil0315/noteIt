@@ -20,17 +20,19 @@ app.get("/", (req, res) => {
   res.send("✅ PDF Summary Backend Running");
 });
 
-// Test Gemini directly
-app.get("/test-gemini", async (req, res) => {
+// 🔍 TEST ROUTE (ADD THIS)
+app.get("/test-summary", async (req, res) => {
   try {
-    const summary = await generateSummary("This is a test sentence.");
+    const summary = await generateSummary(
+      "Cats need regular hydration and vet checkups."
+    );
     res.json({ summary });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 
-// Main summary endpoint
+// Actual summarize API
 app.post("/api/summarize", async (req, res) => {
   try {
     const { text } = req.body;
@@ -41,13 +43,14 @@ app.post("/api/summarize", async (req, res) => {
 
     const summary = await generateSummary(text);
     res.json({ summary });
-  } catch (error) {
-    console.error("❌ Summary error:", error);
+
+  } catch (err) {
+    console.error("❌ Summary Error:", err.message);
     res.status(500).json({ error: "Summary generation failed" });
   }
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Backend running on http://localhost:${PORT}`);
 });
