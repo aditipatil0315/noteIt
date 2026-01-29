@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { run } from "../Gemini/Gemini";
 import pdfToText from "react-pdftotext";
 import { Document, Packer, Paragraph, TextRun } from "docx";
 import Loader from "./Loader/Loader";
@@ -8,19 +7,17 @@ import "./UploadFile.css";
 const UploadFile = () => {
   const uploadFileRef = useRef(null);
 
-  // Auto scroll view
   useEffect(() => {
     const handleScrollToUploadSection = () => {
-      if (uploadFileRef.current) {
-        uploadFileRef.current.scrollIntoView({ behavior: "smooth" });
-      }
+      uploadFileRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     window.addEventListener("scrollToUploadSection", handleScrollToUploadSection);
-
-    return () => {
-      window.removeEventListener("scrollToUploadSection", handleScrollToUploadSection);
-    };
+    return () =>
+      window.removeEventListener(
+        "scrollToUploadSection",
+        handleScrollToUploadSection
+      );
   }, []);
 
   const [result, setResult] = useState("");
@@ -29,132 +26,145 @@ const UploadFile = () => {
   const [text, setText] = useState("");
   const [downloadText, setDownloadText] = useState("");
 
-  // Handling gemini API
   const handleGemini = async () => {
+    if (!text) {
+      alert("Please upload a PDF first");
+      return;
+    }
+
     setLoading(true);
     setScreen(true);
-    const response = await run(text);
-    setLoading(false);
 
-    let responseArray = response.split("**");
-    let newResponse = "";
-    for (let i = 0; i < responseArray.length; i++) {
-      if (i === 0 || i % 2 !== 1) {
-        newResponse += responseArray[i];
-      } else {
-        newResponse += "<b>" + responseArray[i] + "</b>";
+    try {
+      const res = await fetch("http://localhost:5000/api/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.summary) {
+        throw new Error(data.error || "No summary returned");
       }
-    }
-    let newResponse2 = newResponse.split("*").join("</br>");
-    let newResponse3 = newResponse2.replace(/,/g, " ");
-    let newResponse4 = newResponse3.replace(/##/g, "=> ");
-    let newResponse5 = newResponse4.replace(/\s+/g, " ").trim();
-    setResult(newResponse5);
 
-    const plainText = newResponse5
-      .replace(/<\/b>/g, "")
-      .replace(/<b>/g, "")
-      .replace(/<\/br>/g, "\n");
-    setDownloadText(plainText);
+      const response = data.summary;
+
+      let formatted = response
+        .split("**")
+        .map((part, i) => (i % 2 ? `<b>${part}</b>` : part))
+        .join("")
+        .replace(/\*/g, "</br>")
+        .replace(/##/g, "=> ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      setResult(formatted);
+
+      setDownloadText(
+        formatted
+          .replace(/<\/?b>/g, "")
+          .replace(/<\/br>/g, "\n")
+      );
+    } catch (error) {
+      console.error("Backend error:", error);
+      alert("Failed to generate summary");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // extract text from pdf
   const pdfExtract = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      pdfToText(file)
-        .then((text) => setText(text))
-        .catch((error) => console.error(error));
-    } else {
-      alert("File not selected!!");
-    }
+    if (!file) return alert("File not selected!");
+
+    pdfToText(file)
+      .then((text) => setText(text))
+      .catch(console.error);
   };
 
-  // creating docx file
   const handleDownloadWord = async () => {
     const paragraphs = downloadText.split("\n").map(
-      (line) =>
-        new Paragraph({
-          children: [new TextRun(line)],
-        })
+      (line) => new Paragraph({ children: [new TextRun(line)] })
     );
+
     const doc = new Document({
-      sections: [
-        {
-          properties: {},
-          children: paragraphs,
-        },
-      ],
+      sections: [{ children: paragraphs }],
     });
+
     const blob = await Packer.toBlob(doc);
     const url = URL.createObjectURL(blob);
+
     const a = document.createElement("a");
     a.href = url;
     a.download = "summary.docx";
     a.click();
+
     URL.revokeObjectURL(url);
   };
 
   return (
-    <>
-      <div ref={uploadFileRef} className="main_container_bottom">
-        {screen ? (
-          <div className="upload_section_box">
-            <div className="content_box">
-              <h5 className="text_top"><b>Here's your Summary -</b></h5>
-              <br />
-              <h4 dangerouslySetInnerHTML={{ __html: result }}></h4>
-            </div>
+    <div ref={uploadFileRef} className="main_container_bottom">
+      {screen ? (
+        <div className="upload_section_box">
+          <div className="content_box">
+            <h5><b>Here's your Summary -</b></h5>
+            <br />
+            <h4 dangerouslySetInnerHTML={{ __html: result }} />
           </div>
-        ) : (
-          <div className="upload_section_box ">
-            <i className="fa-solid fa-arrow-up-from-bracket box_icon"></i>
-            <h3>Upload your file here</h3>
-            <h2 className="p_tag_drag">(Drag & Drop)</h2>
-            <input type="file" accept="application/pdf" onChange={pdfExtract} />
-            <p className="result-data"></p>
-          </div>
-        )}
-        {loading ? <Loader /> : null}
-        {screen ? (
-          <div className="options_bottom">
-            <button disabled={loading} className="single_option ">
-              {/* <i class="fa-solid fa-arrow-up-from-bracket btn_submit"></i> */}
-              <i className="fa-solid fa-check btn_submit"></i>
-              <p className="btn_submit" onClick={handleGemini}> Submit</p>
+        </div>
+      ) : (
+        <div className="upload_section_box">
+          <i className="fa-solid fa-arrow-up-from-bracket box_icon"></i>
+          <h3>Upload your file here</h3>
+          <h2>(Drag & Drop)</h2>
+          <input type="file" accept="application/pdf" onChange={pdfExtract} />
+        </div>
+      )}
+
+      {loading && <Loader />}
+
+      <div className="options_bottom">
+        <button
+          className="single_option"
+          disabled={loading || !text}
+          onClick={handleGemini}
+        >
+          <i className="fa-solid fa-check"></i>
+          Submit
+        </button>
+
+        {screen && (
+          <>
+            <button
+              className="single_option"
+              disabled={loading}
+              onClick={() => document.getElementById("file-input").click()}
+            >
+              <i className="fa-solid fa-arrow-up-from-bracket"></i>
+              Upload Again
             </button>
-            <div className="file-input-wrapper">
-              <input
-                type="file"
-                accept="application/pdf"
-                onChange={pdfExtract}
-                id="file-input"
-                style={{ display: "none" }}
-              />
-              <button
-                disabled={loading}
-                className="single_option"
-                onClick={() => document.getElementById("file-input").click()}
-              >
-                <i className="fa-solid fa-arrow-up-from-bracket"></i>
-                Upload Again
-              </button>
-            </div>
-            <button disabled={loading} className="single_option">
-              <i class="fa-solid fa-down-long"></i>
-              <p onClick={handleDownloadWord}>Download</p>
+
+            <input
+              type="file"
+              accept="application/pdf"
+              id="file-input"
+              hidden
+              onChange={pdfExtract}
+            />
+
+            <button
+              className="single_option"
+              disabled={loading}
+              onClick={handleDownloadWord}
+            >
+              <i className="fa-solid fa-down-long"></i>
+              Download
             </button>
-          </div>
-        ) : (
-          <button className="single_option">
-            <i class="fa-solid fa-check"></i>
-            <p disabled={loading} onClick={handleGemini}>
-              Submit
-            </p>
-          </button>
+          </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
