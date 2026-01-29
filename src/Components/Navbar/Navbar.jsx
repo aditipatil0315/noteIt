@@ -15,7 +15,7 @@ const Navbar = ({ theme, setTheme }) => {
     <div className={`nav_container ${theme}`}>
       <div className="nav_contents">
         <div className="logo">
-          <p>NoteIt</p>
+          <p>SummarizeIt</p>
         </div>
         <div className="options">
           <ul>
