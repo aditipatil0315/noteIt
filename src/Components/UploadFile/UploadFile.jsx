@@ -4,6 +4,8 @@ import { Document, Packer, Paragraph, TextRun } from "docx";
 import Loader from "./Loader/Loader";
 import "./UploadFile.css";
 
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+
 const UploadFile = () => {
   const uploadFileRef = useRef(null);
 
@@ -36,11 +38,17 @@ const UploadFile = () => {
     setScreen(true);
 
     try {
-      const res = await fetch("https://summarize-it-backend-98ln.onrender.com/api/summarize", {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 60000); // 60s cold start buffer
+
+      const res = await fetch(`${API_URL}/api/summarize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeout);
 
       const data = await res.json();
 
@@ -68,7 +76,11 @@ const UploadFile = () => {
       );
     } catch (error) {
       console.error("Backend error:", error);
-      alert("Failed to generate summary");
+      alert(
+        error.name === "AbortError"
+          ? "Server is waking up. Please click Submit again."
+          : "Failed to generate summary"
+      );
     } finally {
       setLoading(false);
     }
