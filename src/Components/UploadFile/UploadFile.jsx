@@ -36,7 +36,7 @@ const UploadFile = () => {
     setScreen(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/summarize", {
+      const res = await fetch("https://summarize-it-backend-98ln.onrender.com/api/summarize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
