@@ -21,6 +21,9 @@
 // }
 
 
+
+
+
 import axios from "axios";
 
 export async function generateSummary(text) {
@@ -48,7 +51,7 @@ Keep language simple and easy to understand.`
           }
         ],
         temperature: 0.4,
-        max_tokens: 800
+        max_tokens: 1000
       },
       {
         headers: {
@@ -62,12 +65,11 @@ Keep language simple and easy to understand.`
 
   } catch (error) {
     console.error(
-      "❌ Gemini Summary Error:",
+      " Gemini Summary Error:",
       error.response?.data || error.message
     );
     throw new Error("Summary generation failed");
   }
 }
-
 
 
